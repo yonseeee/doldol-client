@@ -2,7 +2,6 @@ import Script from 'next/script';
 import { GA_TRACKING_ID } from './config/env';
 
 const GoogleAnalytics = () => {
-  console.log('GA_TRACKING_ID', GA_TRACKING_ID);
   return (
     <>
       <Script

@@ -11,7 +11,7 @@ const ImageButton: React.FC<Props> = ({ onClick }) => {
 
   useEffect(() => {
     // 오디오 파일 로딩
-    audioRef.current = new Audio('/sounds/pop.mp3');
+    audioRef.current = new Audio('/assets/pop.wav');
     audioRef.current.volume = 0.5;
   }, []);
 
@@ -32,7 +32,7 @@ const ImageButton: React.FC<Props> = ({ onClick }) => {
     <button
       onClick={handleClick}
       className={`
-        w-48 h-48 bg-center bg-contain bg-no-repeat transition-all
+        bg-center bg-contain bg-no-repeat transition-all w-full h-48
         active:bg-[url('/assets/active.png')]
         bg-[url('/assets/default.png')]
         cursor-pointer

@@ -1,5 +1,5 @@
 import ImageButton from '@/components/ImageButton';
-import { Typography, Button } from '@ui/components';
+import { Typography } from '@ui/components';
 import { useState, useRef, useEffect } from 'react';
 
 const MainCountContainer = () => {
@@ -47,10 +47,8 @@ const MainCountContainer = () => {
 
   return (
     <>
-      <Typography variant="h36-bold">메인 페이지</Typography>
       <div className="flex flex-col gap-4 mt-8">
-        <Typography variant="h24-bold">집 가고 싶다.</Typography>
-        <Typography variant="h24-bold">현재 상태: {totalCount}</Typography>
+        <Typography variant="h24-bold">집 가고 싶다 x {totalCount}</Typography>
         <ImageButton onClick={handleClick} />
       </div>
     </>
