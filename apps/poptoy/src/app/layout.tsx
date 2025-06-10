@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import '@/styles';
+import GoogleAnalytics from '@/lib/GA';
+import { GA_TRACKING_ID } from '@/lib/config/env';
 
 export const metadata: Metadata = {
   title: '집가고싶다',
@@ -13,6 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
+      {GA_TRACKING_ID && <GoogleAnalytics />}
       <body>{children}</body>
     </html>
   );
