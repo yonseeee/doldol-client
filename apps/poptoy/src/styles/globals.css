@@ -76,8 +76,10 @@
   font-weight: 700;
   font-display: swap;
   src:
-    url(./fonts/Pretendard/woff2-subset/Pretendard-Bold.subset.woff2) format('woff2'),
-    url(./fonts/Pretendard/woff-subset/Pretendard-Bold.subset.woff) format('woff');
+    url(./fonts/Pretendard/woff2-subset/Pretendard-Bold.subset.woff2)
+      format('woff2'),
+    url(./fonts/Pretendard/woff-subset/Pretendard-Bold.subset.woff)
+      format('woff');
 }
 
 @font-face {
@@ -85,8 +87,10 @@
   font-weight: 500;
   font-display: swap;
   src:
-    url(./fonts/Pretendard/woff2-subset/Pretendard-Medium.subset.woff2) format('woff2'),
-    url(./fonts/Pretendard/woff-subset/Pretendard-Medium.subset.woff) format('woff');
+    url(./fonts/Pretendard/woff2-subset/Pretendard-Medium.subset.woff2)
+      format('woff2'),
+    url(./fonts/Pretendard/woff-subset/Pretendard-Medium.subset.woff)
+      format('woff');
 }
 
 @font-face {
@@ -94,8 +98,10 @@
   font-weight: 400;
   font-display: swap;
   src:
-    url(./fonts/Pretendard/woff2-subset/Pretendard-Regular.subset.woff2) format('woff2'),
-    url(./fonts/Pretendard/woff-subset/Pretendard-Regular.subset.woff) format('woff');
+    url(./fonts/Pretendard/woff2-subset/Pretendard-Regular.subset.woff2)
+      format('woff2'),
+    url(./fonts/Pretendard/woff-subset/Pretendard-Regular.subset.woff)
+      format('woff');
 }
 
 html,
@@ -167,4 +173,44 @@ img {
 
 li {
   list-style: none;
+}
+
+@keyframes shake-scale {
+  0% {
+    transform: scale(1) translateX(0);
+  }
+  10% {
+    transform: scale(1.1) translateX(-5px);
+  }
+  20% {
+    transform: scale(1.1) translateX(5px);
+  }
+  30% {
+    transform: scale(1.1) translateX(-5px);
+  }
+  40% {
+    transform: scale(1.1) translateX(5px);
+  }
+  50% {
+    transform: scale(1.05) translateX(-3px);
+  }
+  60% {
+    transform: scale(1.05) translateX(3px);
+  }
+  70% {
+    transform: scale(1.02) translateX(-2px);
+  }
+  80% {
+    transform: scale(1.02) translateX(2px);
+  }
+  90% {
+    transform: scale(1.01) translateX(-1px);
+  }
+  100% {
+    transform: scale(1) translateX(0);
+  }
+}
+
+.shake-scale {
+  animation: shake-scale 0.6s ease-in-out;
 }
