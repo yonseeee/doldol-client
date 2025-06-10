@@ -4,9 +4,10 @@ import { useEffect, useRef } from 'react';
 
 interface Props {
   onClick?: () => void;
+  isActive?: boolean; // 추가
 }
 
-const ImageButton: React.FC<Props> = ({ onClick }) => {
+const ImageButton: React.FC<Props> = ({ onClick, isActive }) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -34,8 +35,9 @@ const ImageButton: React.FC<Props> = ({ onClick }) => {
       className={`
         bg-center bg-contain bg-no-repeat transition-all w-full h-48
         active:bg-[url('/assets/active.png')]
-        bg-[url('/assets/default.png')]
+        ${isActive ? 'bg-[url("/assets/active.png")]' : `bg-[url('/assets/default.png')]`}
         cursor-pointer
+         
       `}
     ></button>
   );

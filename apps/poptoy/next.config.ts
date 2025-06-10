@@ -15,17 +15,16 @@ module.exports = (phase: any) => {
   const isStaging =
     phase === PHASE_PRODUCTION_BUILD && process.env.STAGING === '1';
 
-  console.log('API_URI', process.env.API_URI);
-
   return {
     env: {
       IS_PRODUCTION: `${isProd ? 1 : 0}`,
       IS_DEV: `${isDev ? 1 : 0}`,
       IS_STAGING: `${isStaging ? 1 : 0}`,
-      API_URI: process.env.API_URI,
       SITE_URI: process.env.SITE_URI,
       REVALIDATE_SECRET_KEY: process.env.REVALIDATE_SECRET_KEY,
       GA_TRACKING_ID: process.env.GA_TRACKING_ID,
+      SUPABASE_URI: process.env.SUPABASE_URI,
+      SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
     },
     transpilePackages: ['@doldol-package/ui'],
     reactStrictMode: false,
