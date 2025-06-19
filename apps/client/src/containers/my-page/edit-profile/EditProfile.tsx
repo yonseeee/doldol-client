@@ -5,13 +5,14 @@ import {
   Notify,
   PasswordField,
   TextField,
-  Toast,
   Typography,
 } from "@ui/components";
 import { ERROR_MESSAGES, HELPER_MESSAGES } from "@libs/utils/message";
 
-import { EditProfileInputForm } from "@/interface/my-page/edit-profile/edit.interface";
-import { IS_DEV } from "@/lib/config/env";
+import {
+  EditProfileInputForm,
+  EditProfileRequest,
+} from "@/interface/my-page/edit-profile/edit.interface";
 import { Icon } from "@ui/components/Icon";
 import Image from "next/image";
 import { KakaoSymbolLogo } from "@icons/KakaoSymbolLogo";
@@ -32,8 +33,8 @@ const EditProfileContainer = () => {
   const { refetch } = useMe();
 
   const { mutate: onEditProfileApi } = useMutation({
-    mutationFn: (data: EditProfileInputForm) => patchUserInfo(data),
-    mutationKey: ["sendEmailCode", watch("name"), watch("password")],
+    mutationFn: (data: EditProfileRequest) => patchUserInfo(data),
+    mutationKey: ["updateInfo", watch("name"), watch("password")],
     onSuccess: (res) => {
       if (res) {
         Notify.success(HELPER_MESSAGES.userInfoUpdateSuccess);
@@ -49,10 +50,23 @@ const EditProfileContainer = () => {
   });
 
   const onSubmit = (data: EditProfileInputForm) => {
-    onEditProfileApi(data);
+    const payload: EditProfileRequest = isSocialUser
+      ? { name: data.name }
+      : { name: data.name, password: data.password };
+    onEditProfileApi(payload);
   };
 
   const { user } = useMe();
+
+  const isSocialUser = user?.socialType
+    ? user?.socialType.toUpperCase() === SocialType.Kakao
+    : false;
+  const isNameValid = watch("name");
+  const isPasswordFieldValid = watch("password") && watch("passwordConfirm");
+
+  const isFormValid = isSocialUser
+    ? isNameValid
+    : isNameValid && isPasswordFieldValid;
 
   return (
     <>
@@ -65,7 +79,7 @@ const EditProfileContainer = () => {
             height={100}
           />
         </div>
-        {user && user.socialType === SocialType.Kakao.toUpperCase() && (
+        {isSocialUser && (
           <div className="flex items-center justify-center w-8 h-8 bg-[#FEE500] rounded-full ml-4">
             <Icon icon={KakaoSymbolLogo} className="w-6 h-6" />
           </div>
@@ -85,40 +99,44 @@ const EditProfileContainer = () => {
             required: ERROR_MESSAGES.usernameRequired,
           })}
         />
-        <Typography variant={"b16"} className="mt-10">
-          비밀번호
-        </Typography>
-        <PasswordField
-          placeholder="8~30자리 영대·소문자, 숫자, 특수문자 조합"
-          error={errors.password ? true : false}
-          errorMessage={errors.password?.message}
-          gutterBottom
-          {...register("password", {
-            required: ERROR_MESSAGES.passwordRequired,
-            validate: (value) => {
-              if (!PASSWORD_REGEX.test(value)) {
-                return ERROR_MESSAGES.passwordInvalid;
-              }
-            },
-          })}
-        />
-        <Typography variant={"b16"} className="mt-10">
-          비밀번호 확인
-        </Typography>
-        <PasswordField
-          placeholder="비밀번호를 한 번 더 입력해주세요."
-          error={errors.passwordConfirm ? true : false}
-          errorMessage={errors.passwordConfirm?.message}
-          gutterBottom
-          {...register("passwordConfirm", {
-            required: ERROR_MESSAGES.passwordRequired,
-            validate: (value) => {
-              if (watch("password") !== value) {
-                return ERROR_MESSAGES.passwordConfirmInvalid;
-              }
-            },
-          })}
-        />
+        {!isSocialUser && (
+          <>
+            <Typography variant={"b16"} className="mt-10">
+              비밀번호
+            </Typography>
+            <PasswordField
+              placeholder="8~30자리 영대·소문자, 숫자, 특수문자 조합"
+              error={errors.password ? true : false}
+              errorMessage={errors.password?.message}
+              gutterBottom
+              {...register("password", {
+                required: ERROR_MESSAGES.passwordRequired,
+                validate: (value) => {
+                  if (!PASSWORD_REGEX.test(value)) {
+                    return ERROR_MESSAGES.passwordInvalid;
+                  }
+                },
+              })}
+            />
+            <Typography variant={"b16"} className="mt-10">
+              비밀번호 확인
+            </Typography>
+            <PasswordField
+              placeholder="비밀번호를 한 번 더 입력해주세요."
+              error={errors.passwordConfirm ? true : false}
+              errorMessage={errors.passwordConfirm?.message}
+              gutterBottom
+              {...register("passwordConfirm", {
+                required: ERROR_MESSAGES.passwordRequired,
+                validate: (value) => {
+                  if (watch("password") !== value) {
+                    return ERROR_MESSAGES.passwordConfirmInvalid;
+                  }
+                },
+              })}
+            />
+          </>
+        )}
 
         <Button
           variant="secondary"
@@ -126,12 +144,7 @@ const EditProfileContainer = () => {
           wide
           className="mt-10"
           type="submit"
-          disabled={
-            !watch("name") ||
-            !watch("password") ||
-            !watch("passwordConfirm") ||
-            Object.keys(errors).length > 0
-          }
+          disabled={!isFormValid || Object.keys(errors).length > 0}
         >
           완료
         </Button>
