@@ -9,10 +9,7 @@ import {
 } from "@ui/components";
 import { ERROR_MESSAGES, HELPER_MESSAGES } from "@libs/utils/message";
 
-import {
-  EditProfileInputForm,
-  EditProfileRequest,
-} from "@/interface/my-page/edit-profile/edit.interface";
+import { EditProfileInputForm } from "@/interface/my-page/edit-profile/edit.interface";
 import { Icon } from "@ui/components/Icon";
 import Image from "next/image";
 import { KakaoSymbolLogo } from "@icons/KakaoSymbolLogo";
@@ -26,6 +23,7 @@ import useMe from "@/hooks/useMe";
 import { useMutation } from "@tanstack/react-query";
 import { ErrorDTO } from "@/types/error";
 import { AxiosError, isAxiosError } from "axios";
+import { UpdateUserInfoRequest } from "@/types/user";
 
 const EditProfileContainer = () => {
   const { register, handleSubmit, watch, errors } = useEditProfileForm();
@@ -33,7 +31,7 @@ const EditProfileContainer = () => {
   const { refetch } = useMe();
 
   const { mutate: onEditProfileApi } = useMutation({
-    mutationFn: (data: EditProfileRequest) => patchUserInfo(data),
+    mutationFn: (data: UpdateUserInfoRequest) => patchUserInfo(data),
     mutationKey: ["updateInfo", watch("name"), watch("password")],
     onSuccess: (res) => {
       if (res) {
@@ -50,7 +48,7 @@ const EditProfileContainer = () => {
   });
 
   const onSubmit = (data: EditProfileInputForm) => {
-    const payload: EditProfileRequest = isSocialUser
+    const payload: UpdateUserInfoRequest = isSocialUser
       ? { name: data.name }
       : { name: data.name, password: data.password };
     onEditProfileApi(payload);
