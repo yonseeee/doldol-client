@@ -12,7 +12,7 @@ export interface MyInfoResponse {
 // 개인정보 수정 PATCH /user/info
 export interface UpdateUserInfoRequest {
   name: string;
-  password: string;
+  password?: string;
 }
 
 export interface ApiResponseMyInfo {
