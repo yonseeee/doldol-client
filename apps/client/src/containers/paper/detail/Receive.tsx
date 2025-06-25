@@ -45,8 +45,6 @@ const PaperDetailReceiveContainer: React.FC<Props> = ({
     getNextPageParam: (lastPage) => {
       return lastPage.message.hasNext ? lastPage.message.nextCursor : undefined;
     },
-    staleTime: 1000 * 60 * 5, // 5분 동안 캐시 유지
-    refetchOnWindowFocus: false, // 윈도우 포커스 시 재조회 하지 않음
     retry: false, // 실패 시 재시도 하지 않음
   });
 
