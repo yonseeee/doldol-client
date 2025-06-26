@@ -2,8 +2,11 @@ import "@/styles";
 
 import type { Metadata } from "next";
 import Providers from "./providers";
+import Script from "next/script";
 
 const BASE_URL = "https://doldol.wha1eson.co.kr";
+
+import GoogleAnalytics from "@/lib/GA";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
@@ -38,6 +41,28 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
+      <head>
+        {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
+              strategy="afterInteractive"
+            />
+            <Script
+              id="gtag-init"
+              strategy="afterInteractive"
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}');
+                `,
+              }}
+            />
+          </>
+        )}
+      </head>
       <body>
         <Providers>
           {children}
